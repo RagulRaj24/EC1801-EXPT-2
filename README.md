@@ -21,8 +21,57 @@ File name	Purpose
 logic_gates.v	Logic-gate RTL
 logic_gates_tb.v	All input combinations and VCD generation
  # Verilog  Program
+ ```
+ module basic_gates (
+    input wire a,
+    input wire b,
+    output wire y_and,
+    output wire y_or,
+    output wire y_not
+);
+
+assign y_and = a & b;  // AND gate
+assign y_or  = a | b;  // OR gate
+assign y_not = ~a;     // NOT gate
+
+endmodule
+```
 
 # **Test Bench Program**
+```
+
+module tb2;
+
+reg a, b;
+wire y_and, y_or, y_not;
+
+basic_gates uut (
+    .a(a),
+    .b(b),
+    .y_and(y_and),
+    .y_or(y_or),
+    .y_not(y_not)
+);
+
+initial begin
+
+    $dumpfile("basic_gates.vcd");
+    $dumpvars(0, tb2);
+
+    $monitor("Time=%0t a=%b b=%b | AND=%b OR=%b NOT(a)=%b",
+              $time, a, b, y_and, y_or, y_not);
+
+    a = 0; b = 0; #10;
+    a = 0; b = 1; #10;
+    a = 1; b = 0; #10;
+    a = 1; b = 1; #10;
+
+    $finish;
+
+end
+
+endmodule
+```
 
 
 
@@ -78,6 +127,7 @@ Y_NOT = A'
 The design was compiled and simulated using Synopsys VCS, and the functionality was verified using DVE waveform analysis, matching the expected truth table.
 Output
 # OUTPUT
+<img width="1917" height="982" alt="Screenshot 2026-11-23 095847" src="https://github.com/user-attachments/assets/b52c7c55-0b25-447e-b4dd-f7846077cf48" />
 
 
  
